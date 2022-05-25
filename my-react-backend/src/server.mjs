@@ -25,7 +25,7 @@ app.post( '/hello', express.json(), (req, res) =>
 
 const client = new MongoClient('mongodb://localhost:27017');
 
-app.post('/api/addMovie', async (req, res) => {
+app.post('/api/addMovieData', async (req, res) => {
     try {
         await client.connect();
         
