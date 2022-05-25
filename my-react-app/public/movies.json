@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Terminator2",
+        "date": "7/2/1991",
+        "actors" : ["Arnold Schwarzenegger", "Linda Hamilton", "Edward Furlong"],
+        "poster" : "images/t2.jpg",
+        "rating" : 5
+    },
+    {
+        "name": "Rocky IV",
+        "date": "11/27/1985",
+        "actors" : ["Sylvester Stallone", "Carl Weathers", "Dolf Lundgren"],
+        "poster" : "images/rocky4.jpg",
+        "rating" : 5
+    }
+]
