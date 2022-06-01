@@ -3,6 +3,8 @@ import express from 'express';
 import {MongoClient} from 'mongodb';
 import path from 'path';
 import { fileURLToPath } from 'url';
+//const cookieParser = require("cookie-parser");
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -11,6 +13,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '/build')));
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get( '/hello', (req, res) =>  res.send("hello there"));
 app.get( '/hello/:name', (req, res) =>  
@@ -43,6 +46,7 @@ app.post('/api/addMovie', async (req, res) => {
 })
 
 app.get('/api/data', async (req, res) => {
+    if (!req.cookies.token) return res.status(401).send();
     try {
         await client.connect();
         
@@ -58,6 +62,15 @@ app.get('/api/data', async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+app.post("/login", (req, res) => {
+    res
+      .writeHead(200, {
+        "Set-Cookie": "token=encryptedstring; HttpOnly",
+        "Access-Control-Allow-Credentials": "true"
+      })
+      .send();
+  });
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));

@@ -13,7 +13,10 @@ function App({secret: sc}) {
 
   useEffect( () => {
     const fetchData = async () => {
-      console.log("running");
+      await fetch("/login",{
+        method:'post',
+        credentials: 'include'
+      });
       const result = await fetch("/api/data");
       const body = await result.json();
       setMovies(body);
