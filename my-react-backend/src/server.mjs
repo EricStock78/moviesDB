@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 //const jwt = require('jsonwebtoken');
 import jwt from 'jsonwebtoken';
 const { sign, verify } = jwt;
+import fs from 'fs';
+import https from 'https';
 
 //comment
 const app = express();
@@ -32,14 +34,16 @@ app.post( '/hello', express.json(), (req, res) =>
     
 });
 
-const JWT_SECRET = "EricsTestSecretKeySuperSecure";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function generateAccessToken(tokenData) {
     return jwt.sign(tokenData, JWT_SECRET);
   }
 
 
-const client = new MongoClient('mongodb://localhost:27017');
+//const client = new MongoClient('mongodb://localhost:27017');
+const client = new MongoClient(process.env.MONGO_CONNECT);
+//mongodb+srv://ericstock:<password>@moviesdb.vi5fhnw.mongodb.net/?retryWrites=true&w=majority
 
 app.post('/api/addMovieData', async (req, res) => {
     try {
@@ -102,6 +106,10 @@ app.post("/login", (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));
 })
+const port = 443;
+https.createServer({key: fs.readFileSync("key.pem"),
+                    cert: fs.readFileSync("cert.pem"),},
+                    app).listen(port, () => { console.log(`server is running at port ${port}`)})
 
-app.listen( 8000, () => console.log( "server is listening on port 8000"));
+//app.listen( 8000, () => console.log( "server is listening on port 8000"));
 
